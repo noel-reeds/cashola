@@ -1,4 +1,4 @@
-# TraceCash - Every cent matters!  
+# Cash0la - But where does your cash go?  
   
 A simple budgeting tool to keep track users expenditure.  
 TracePesa aims to log users' expenditures from various payments platforms.  
@@ -29,6 +29,10 @@ $ flask run --debug
 
 ## ROUTES  
 
+All routes require authentication as such, request for an authentication  
+token first before accessing further URIs  
+- `GET /api/v1/access/token`: returns an access token with max_age, expire_in after sometime.  
+  
 - `POST /api/v1/signup`: creates a new user with specified params(email, password, username, name).  
 - `POST /api/v1/expense/add`: adds a user expenditure.  
 - `DELETE /api/v1/expense/remove/int:expense_id>`: deletes an expenditure.
