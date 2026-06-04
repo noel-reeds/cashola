@@ -24,7 +24,7 @@ def verify_password(username_or_token, password):
     g.user = user
     return True
 
-@user.route('/access_token')
+@user.route('/access/token')
 @auth.login_required
 def get_token():
     """
