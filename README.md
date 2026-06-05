@@ -9,7 +9,7 @@ For a start, we're making it possible to trace expenditures logged on Mpesa
 
 Next, we'll look into the various mobile wallets and maybe trace crypto.  
   
-## Setup  
+## Set Up  
 
 Create a virtual environment.  
 ```
@@ -29,5 +29,6 @@ $ flask run --debug
 
 ## Visualize with swagger UI  
 On your browser, go to `http://localhost:5000/apidocs/` to view api documentation.  
-  
+
+reach out to me on [Twitter](https://x.com/noelreeds)  
 xx  
