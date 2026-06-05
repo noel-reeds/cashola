@@ -41,8 +41,7 @@ def find_statement(statement_pattern: str, pathdir: str) -> List:
                 statements.append(os.path.join(dp, f))
     return statements
 
+# prerequisites for statements' lookup
 pattern=os.getenv('STATEMENT_NAME')
 pathdir=os.getenv('STATEMENT_DIR')
-
-statements = find_statement(pattern, pathdir)
-dfs = tabula.read_pdf(statements[0], password=os.getenv('STATEMENT_PASSWD'))
+pass_in=os.getenv('STATEMENT_PASSWD')
