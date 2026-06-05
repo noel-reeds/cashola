@@ -29,9 +29,16 @@ def verify_password(username_or_token, password):
 def get_token():
     """
     User requests authentication token.
-
-    Params:
-    None
+    ---
+    tags:
+        - Auth
+    responses:
+        200:
+            description: return an auth token.
+        404:
+            description: an error occured.
+    params:
+        description: None
     """
     access_token = g.user.generate_auth_token()
     return { 'token': access_token }
@@ -39,8 +46,15 @@ def get_token():
 @user.route('/users', methods=['GET'])
 def users():
     """
-    Queries database and retrieve all users in databases if any,
-    error otherwise.
+    Queries database and retrieve all users in databases if any, error otherwise.
+    ---
+    tags:
+        - Users
+    responses:
+        200:
+            description: List of users.
+        404:
+            description: No users found.
     """
     from models import User, session
     try:
@@ -56,9 +70,16 @@ def users():
 async def specific_user(user_id):
     """
     Returns a user specified by user_id if present, error otherwise.
-
-    Params
-    Function takes in user id.
+    ---
+    tags:
+        - Users
+    responses:
+        200:
+            description: A user specified with user_id.
+        404:
+            description: No user found.
+    params:
+        description: user_id
     """
     from models import User
     # check for a user matching the supplied id
@@ -73,9 +94,16 @@ async def create_user():
     """
     Creates and persists a new user to the database.
     If user already exists, return an error.
-
-    Params
-    None.
+    ---
+    tags:
+        - Users
+    responses:
+        200:
+            description: user creates, OK!
+        404:
+            description: error with the request.
+    params:
+        description: None.
     """
     from models import User, session
     try:
@@ -103,9 +131,16 @@ async def delete_a_user(user_id):
     """
     Deletes a user if present in database, returns an error
     otherwise.
-
-    Params
-    user_id tied to the user.
+    ---
+    tags:
+        - Users
+    responses:
+        200:
+            description: user deleted, OK!
+        404:
+            description: user does not exist.
+    params:
+        description: user_id tied to the user.
     """
     from models import User, session
     try:
@@ -118,14 +153,21 @@ async def delete_a_user(user_id):
     except Exception as e:
         return {"message": "An error with the request!"}
 
-@user.route('/update', methods=['UPDATE'])
+@user.route('/update', methods=['PATCH'])
 @auth.login_required
 def user_update():
     """
     Updates an exisiting user in the database.
-
-    Params
-    None.
+    ---
+    tags:
+        - Users
+    responses:
+        200:
+            description: user update, OK!
+        400:
+            description: an error occured.
+    params:
+        description: None.
     """
     from models import User, session
     try:

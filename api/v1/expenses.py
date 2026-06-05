@@ -4,15 +4,47 @@ from api.v1.users import auth
 
 expense = Blueprint('expense', __name__)
 
+@expense.route('/dfs_from_statements')
+@auth.login_required
+def loads_expenses_dfs():
+    """
+    Loads expenditure from dataframes.
+    ---
+    tags:
+        - Expenses
+    responses:
+        200:
+            description: OK!
+        404:
+            description: error occured.
+    params:
+        description: None
+    """
+    from models import find_statement, pattern, pathdir
+    statements = find_statement(pattern, pathdir)
+    # NotImplemented for more than one statements.
+    dfs = tabula.read_pdf(statements[0], password=pass_in)
+    for df in dfs:
+        for key in df.keys():
+            pass
+    return {'message': 'OK'}
+
 @expense.route('/add/<int:user_id>', methods=['POST'])
 @auth.login_required
 def add_expense(user_id):
     """
     Adds an expenditure linked to a specific user 
     to the database.
-
-    Params:
-    user_id foreign key from user table.
+    ---
+    tags:
+        - Expenses
+    responses:
+        200:
+            description: expense add, OK!
+        404:
+            description: error.
+    params:
+        description: user_id foreign key from user table.
     """
     from models import Expense, session
     try:
@@ -40,9 +72,16 @@ def delete_expense(expense_id):
     """
     Deletes an expenditure from the database if it exists,
     otherwise return an error.
-
-    Params:
-    :expenditure_id
+    ---
+    tags:
+        - Expenses
+    responses:
+        200:
+            description: expense delete, OK!
+        404:
+            description: error with the delete request.
+    params:
+        description: expenditure_id
     """
     try:
         from models import Expense, session
@@ -61,9 +100,16 @@ def user_expenses():
     """
     Queries the database and returns all expenses of a
     user of any.
-
-    Params:
-    user_id of the user.
+    ---
+    tags:
+        - Expenses
+    responses:
+        200:
+            description: List of expenses for a user.
+        404:
+            description: No expenses for this user.
+    params:
+        description: user_id of the user.
     """
     from models import Expense, session
     expenses = session.query(Expense).filter_by(user_id=g.user.id).all()
@@ -78,9 +124,16 @@ def update_expense(expense_id):
     """
     Updates a user expenditure if it exists, otherwise
     return an error.
-
+    ---
+    tags:
+        - Expenses
+    responses:
+        200:
+            description: user expenditure update, OK!
+        404:
+            description: error updating an expense.
     Params:
-    :expense_id
+        description: expense_id
     """
     from models import Expense, session
     try:
@@ -98,6 +151,16 @@ def update_expense(expense_id):
 def expenditure(expense_id):
     """
     Return a specific expenditure
+    ---
+    tags:
+        - Expenses
+    responses:
+        200:
+            description: return a specific expenditure.
+        404:
+            description: expense does not exist.
+    params:
+        description: expense_id
     """
     from models import Expense, session
     try:
