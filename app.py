@@ -1,4 +1,5 @@
 from flask import Flask
+from flasgger import Swagger
 from dotenv import load_dotenv
 import os
 
@@ -17,6 +18,8 @@ def setup() -> Flask:
     Returns a flask app instance.
     """
     app = Flask(__name__)
+    swagger = Swagger(app)
+    swagger.config['title'] = 'Cash0la API'
     app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
     app.url_map.strict_slashes = False
     app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('SQLALCHEMY_DATABASE_URI')
