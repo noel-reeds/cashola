@@ -28,7 +28,7 @@ $ flask run --debug
 ```
 
 ## Visualize with swagger UI  
-On your browser, go to `https://cashola.onrender.com/apidocs/` to view api documentation.  
+On your browser, go to [api docs](https://cashola.onrender.com/apidocs/) to view api documentation.  
 
 reach out to me on [Twitter](https://x.com/noelreeds)  
 xx  
