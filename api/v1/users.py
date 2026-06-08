@@ -24,6 +24,13 @@ def verify_password(username_or_token, password):
     g.user = user
     return True
 
+@user.route("/", methods=['GET'])
+def root_URL():
+    """
+    Tests status of API
+    """
+    return {'status': 'OK!'}
+
 @user.route('/access/token')
 @auth.login_required
 def get_token():
