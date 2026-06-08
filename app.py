@@ -33,7 +33,7 @@ def setup() -> Flask:
         """
         Tests status of API
         """
-        return {'status': 'OK!'}
+        return {'status': 'OK!, see ---> https://cashola.onrender.com/apidocs/'}
 
     app.register_blueprint(auth_blueprint, url_prefix='/api/v1')
     app.register_blueprint(expense_blueprint, url_prefix='/api/v1')
