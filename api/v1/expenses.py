@@ -20,13 +20,15 @@ def loads_expenses_dfs():
     params:
         description: None
     """
-    from models import find_statement, pattern, pathdir
+    from models import find_statement, pattern, pathdir, Expense, session
     statements = find_statement(pattern, pathdir)
     # NotImplemented for more than one statements.
-    dfs = tabula.read_pdf(statements[0], password=pass_in)
+    dfs = tabula.read_pdf(statements[0],
+                        password=pass_in, silent=True,
+                        lattice=True, pages='all')
     for df in dfs:
-        for key in df.keys():
-            pass
+        payments = df.loc[[x for x in df.index if df.loc[x, 'Details'].startswith(
+                'Merchant Payment') or dfs[1].loc[x, 'Details'].startswith('Pay Bill')]]
     return {'message': 'OK'}
 
 @expense.route('/add/<int:user_id>', methods=['POST'])
