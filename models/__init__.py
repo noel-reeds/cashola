@@ -6,7 +6,7 @@ import os
 from fnmatch import fnmatchcase
 
 __all__ = [ "Base", "find_statement", "session", "pattern",
-            "pathdir", "pass_in" ]
+            "pathdir", "pass_in", "Expense", "User" ]
 
 Base = declarative_base()
 
