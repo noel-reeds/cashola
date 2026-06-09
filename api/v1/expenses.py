@@ -29,6 +29,8 @@ def loads_expenses_dfs():
     for df in dfs:
         payments = df.loc[[x for x in df.index if df.loc[x, 'Details'].startswith(
                 'Merchant Payment') or dfs[1].loc[x, 'Details'].startswith('Pay Bill')]]
+    payments.dropna(axis=1).to_sql(name='_expenses',
+                    con=session.bind, if_exists='append', index=False)
     return {'message': 'OK'}
 
 @expense.route('/add/<int:user_id>', methods=['POST'])
