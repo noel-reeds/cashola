@@ -1,4 +1,4 @@
-# Cash0la - But where does your cash go?  
+# But where does your cash go? Cashola, lets you find out!
   
 A simple budgeting tool to keep track users expenditure.  
 TracePesa aims to log users' expenditures from various payments platforms.  
