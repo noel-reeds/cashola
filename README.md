@@ -10,7 +10,7 @@ For a start, we're making it possible to trace expenditures logged on Mpesa
 
 Next, we'll look into the various mobile wallets and maybe trace crypto.  
   
-## Set Up  
+## Basic SET UP for development purposes only.  
 
 Create a virtual environment.  
 ```
@@ -22,9 +22,10 @@ $ pip3 install -r requirements.txt
 ```
 
 ## Run  
-
+Set the ```FLASK_APP``` environment variable.  
 ```
 $ export FLASK_APP=app.py  
+
 $ flask run --debug  
 ```
 
