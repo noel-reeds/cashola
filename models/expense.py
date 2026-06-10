@@ -10,12 +10,12 @@ class Expense(Base):
     """
     __tablename__ = 'expenses'
 
-    id = Column(String, primary_key=True)
-    user_id = Column(Integer, ForeignKey('user_accounts.id'), nullable=False)
-    category = Column(String(100), nullable=False)
-    description = Column(String(100), nullable=False)
-    name = Column(String(50), nullable=False)
-    amount = Column(Numeric(precision=2), nullable=False)
+    id = Column(String, primary_key=True, nullable=True)
+    user_id = Column(Integer, ForeignKey('user_accounts.id'), nullable=True)
+    receipt_no = Column(String(100), nullable=True)
+    description = Column(String(100), nullable=True)
+    name = Column(String(50), nullable=True)
+    amount = Column(Numeric(precision=2), nullable=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
 
