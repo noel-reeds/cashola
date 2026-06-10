@@ -2,7 +2,7 @@
 ## Cashola, lets you find out!  
   
 A simple budgeting tool to keep track users expenditure.  
-TracePesa aims to log users' expenditures from various payments platforms.  
+Cashola aims to log users' expenditures from various payments platforms.  
   
 For a start, we're making it possible to trace expenditures logged on Mpesa  
 - Lipa na Mpesa options of:  
