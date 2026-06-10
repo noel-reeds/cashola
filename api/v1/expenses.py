@@ -27,10 +27,16 @@ def loads_expenses_dfs():
                         password=pass_in, silent=True,
                         lattice=True, pages='all')
     for df in dfs:
+        # Filters out Lipa Na Mpesa(Till & Paybill) transations only.
         payments = df.loc[[x for x in df.index if df.loc[x, 'Details'].startswith(
                 'Merchant Payment') or dfs[1].loc[x, 'Details'].startswith('Pay Bill')]]
-    payments.dropna(axis=1).to_sql(name='_expenses',
-                    con=session.bind, if_exists='append', index=False)
+    # Drop NaN fields created by tabula-py from multiline column entries.
+    payments.dropna(
+            axis=1).drop(
+            columns=['Transaction\rStatus', 'Balance']).rename(
+            columns={'Completion Time': 'created_at', 'Details': 'description',
+            'Withdrawn': 'amount','Receipt No.': 'receipt_no'}).to_sql(
+            name='expenses', con=session.bind, if_exists='append', index=False)
     return {'message': 'OK'}
 
 @expense.route('/add/<int:user_id>', methods=['POST'])
