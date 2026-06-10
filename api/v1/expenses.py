@@ -31,6 +31,7 @@ def loads_expenses_dfs():
         payments = df.loc[[x for x in df.index if df.loc[x, 'Details'].startswith(
                 'Merchant Payment') or dfs[1].loc[x, 'Details'].startswith('Pay Bill')]]
     # Drop NaN fields created by tabula-py from multiline column entries.
+    # Aligns expense model to incoming dataframes
     payments.dropna(
             axis=1).drop(
             columns=['Transaction\rStatus', 'Balance']).rename(
