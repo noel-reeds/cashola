@@ -26,10 +26,24 @@ def loads_expenses_dfs():
     dfs = tabula.read_pdf(statements[0],
                         password=pass_in, silent=True,
                         lattice=True, pages='all')
+    # creates summary_table from dataframe and flushes.
+    # assumes summary of statement has no NaN fields.
+    if not dfs or len(dfs) < 1:
+        return {'message': 'statement parsing errors'}
+    first_df = dfs[0]
+    first_df.rename(columns={
+            'TRANSACTION TYPE': 'transaction',
+            'PAID IN': 'paid_in',
+            'PAID OUT': 'paid_out'
+            }).to_sql(
+                'summary_table', con=session.bind,
+                if_exists='delete_rows', index=False)
+    # flushes rest of dataframes to database.
     for df in dfs:
         # Filters out Lipa Na Mpesa(Till & Paybill) transations only.
-        payments = df.loc[[x for x in df.index if df.loc[x, 'Details'].startswith(
-                'Merchant Payment') or dfs[1].loc[x, 'Details'].startswith('Pay Bill')]]
+        payments = df.loc[[x for x in df.index if df.loc[x, 'Details'].\
+                startswith('Merchant Payment') or dfs[1].loc[x, 'Details'].\
+                startswith('Pay Bill')]]
     # Drop NaN fields created by tabula-py from multiline column entries.
     # Aligns expense model to incoming dataframes
     payments.dropna(
