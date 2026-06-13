@@ -31,10 +31,11 @@ def loads_expenses_dfs():
     if not dfs or len(dfs) < 1:
         return {'message': 'statement parsing errors'}
     first_df = dfs[0]
-    first_df.rename(columns={
-            'TRANSACTION TYPE': 'transaction',
-            'PAID IN': 'paid_in',
-            'PAID OUT': 'paid_out'
+    first_df.replace(',','',regex=True).astype(
+            {'PAID IN': 'float', 'PAID OUT': 'float'}).rename(
+            columns={'TRANSACTION TYPE': 'transaction',
+                    'PAID IN': 'paid_in',
+                    'PAID OUT': 'paid_out'
             }).to_sql(
                 'summary_table', con=session.bind,
                 if_exists='delete_rows', index=False)
@@ -46,8 +47,7 @@ def loads_expenses_dfs():
                 startswith('Pay Bill')]]
     # Drop NaN fields created by tabula-py from multiline column entries.
     # Aligns expense model to incoming dataframes
-    payments.dropna(
-            axis=1).drop(
+    payments.dropna(axis=1).replace(',','',regex=True).drop(
             columns=['Transaction\rStatus', 'Balance']).rename(
             columns={'Completion Time': 'created_at', 'Details': 'description',
             'Withdrawn': 'amount','Receipt No.': 'receipt_no'}).to_sql(
