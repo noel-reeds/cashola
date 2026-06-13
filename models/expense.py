@@ -12,9 +12,9 @@ class Expense(Base):
 
     id = Column(String, primary_key=True, nullable=True)
     user_id = Column(Integer, ForeignKey('user_accounts.id'), nullable=True)
-    receipt_no = Column(String(100), nullable=True)
-    description = Column(String(100), nullable=True)
-    name = Column(String(50), nullable=True)
+    receipt_no = Column(String(20), nullable=True)
+    description = Column(String(500), nullable=True)
+    name = Column(String(100), nullable=True)
     amount = Column(Numeric(precision=2), nullable=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
