@@ -46,6 +46,15 @@ def loads_expenses_dfs():
                 startswith('Merchant Payment') or dfs[1].loc[x, 'Details'].\
                 startswith('Pay Bill')]]
     payments['Withdrawn'] = payments['Withdrawn'].replace(',','', regex=True)
+    datetime_df = payments.drop('Transaction\rStatus', 'Balance','Completion Time',
+                'Details', 'Receipt No.','Withdrawn')
+    datetime_df = payments[datetime_df].apply(to_datetime, errors='coerce')
+
+    withdrawn_df = payments.columns.drop('Transaction\rStatus', 'Balance',
+                'Completion Time','Details', 'Receipt No.')
+    payments['Withdrawn'] = payments.astype({'Withdrawn': 'float'})
+    payments['Withdrawn'] = payments['Withdrawn'].abs()
+
     # Drop NaN fields created by tabula-py from multiline column entries.
     # Aligns expense model to incoming dataframes
     payments.dropna(axis=1).replace(',','',regex=True).drop(
