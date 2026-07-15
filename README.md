@@ -27,6 +27,10 @@ Set the ```FLASK_APP``` environment variable.
 $ export FLASK_APP=app.py  
 
 $ flask run --debug  
+```  
+## Use a production WSGI server instead  
+```
+waitress-serve --port=8080 --call app:setup
 ```
 
 ## Visualize with swagger UI  
