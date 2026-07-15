@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, redirect
 from flasgger import Swagger
 from dotenv import load_dotenv
 import os
@@ -33,7 +33,7 @@ def setup() -> Flask:
         """
         Tests status of API
         """
-        return {'status': 'OK!, see ---> https://cashola.onrender.com/apidocs/'}
+        return redirect('https://cashola.onrender.com/apidocs/', code=302)
 
     app.register_blueprint(auth_blueprint, url_prefix='/api/v1')
     app.register_blueprint(expense_blueprint, url_prefix='/api/v1')
