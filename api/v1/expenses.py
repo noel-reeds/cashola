@@ -1,11 +1,12 @@
+import tabula, pandas
 from flask import Blueprint, request, g
 from flask import jsonify as js, jsonify
 from api.v1.users import auth
 
 expense = Blueprint('expense', __name__)
 
-@expense.route('/dfs_from_statements')
-@auth.login_required
+@expense.route('/dfs_from_statements', methods=['GET', 'POST'])
+# @auth.login_required
 def loads_expenses_dfs():
     """
     Loads expenditure from dataframes.
@@ -20,10 +21,10 @@ def loads_expenses_dfs():
     params:
         description: None
     """
-    from models import find_statement, pattern, pathdir, Expense, session
-    statements = find_statement(pattern, pathdir)
+    from models import find_statement, pass_in, pattern, pathdir, Expense, session
+    stmts = find_statement(pattern, pathdir)
     # NotImplemented for more than one statements.
-    dfs = tabula.read_pdf(statements[0],
+    dfs = tabula.read_pdf(stmts[0],
                         password=pass_in, silent=True,
                         lattice=True, pages='all')
     # creates summary_table from dataframe and flushes.
@@ -40,28 +41,25 @@ def loads_expenses_dfs():
                 'summary_table', con=session.bind,
                 if_exists='delete_rows', index=False)
     # flushes rest of dataframes to database.
-    for df in dfs:
+    for df in dfs[1:]:
         # Filters out Lipa Na Mpesa(Till & Paybill) transations only.
         payments = df.loc[[x for x in df.index if df.loc[x, 'Details'].\
-                startswith('Merchant Payment') or dfs[1].loc[x, 'Details'].\
+                startswith('Merchant Payment') or df.loc[x, 'Details'].\
                 startswith('Pay Bill')]]
-    payments['Withdrawn'] = payments['Withdrawn'].replace(',','', regex=True)
-    datetime_df = payments.drop('Transaction\rStatus', 'Balance','Completion Time',
-                'Details', 'Receipt No.','Withdrawn')
-    datetime_df = payments[datetime_df].apply(to_datetime, errors='coerce')
+        payments.Withdrawn = payments.Withdrawn.replace(',','', regex=True)
+        datetime_df = payments.filter(items=['Completion Time']).apply(pandas.to_datetime, errors='coerce')
 
-    withdrawn_df = payments.columns.drop('Transaction\rStatus', 'Balance',
-                'Completion Time','Details', 'Receipt No.')
-    payments['Withdrawn'] = payments.astype({'Withdrawn': 'float'})
-    payments['Withdrawn'] = payments['Withdrawn'].abs()
+        # convert withdrawn column from str to abs integer
+        payments.Withdrawn = payments.Withdrawn.astype(float)
+        payments.Withdrawn = payments.Withdrawn.abs()
 
-    # Drop NaN fields created by tabula-py from multiline column entries.
-    # Aligns expense model to incoming dataframes
-    payments.dropna(axis=1).replace(',','',regex=True).drop(
-            columns=['Transaction\rStatus', 'Balance']).rename(
-            columns={'Completion Time': 'created_at', 'Details': 'description',
-            'Withdrawn': 'amount','Receipt No.': 'receipt_no'}).to_sql(
-            name='expenses', con=session.bind, if_exists='append', index=False)
+        # Drop NaN fields created by tabula-py from multiline column entries.
+        # Aligns expense model to incoming dataframes
+        payments.dropna(axis=1).replace(',','',regex=True).drop(
+                columns=['Transaction\rStatus', 'Balance'], axis=1).rename(
+                columns={'Completion Time': 'created_at', 'Details': 'description',
+                'Withdrawn': 'amount','Receipt No.': 'receipt_no'}).to_sql(
+                name='expenses', con=session.bind, if_exists='append', index=False)
     return {'message': 'OK'}
 
 @expense.route('/add/<int:user_id>', methods=['POST'])
