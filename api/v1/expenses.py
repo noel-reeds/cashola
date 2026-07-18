@@ -1,9 +1,11 @@
-import tabula, pandas
+import tabula
+import pandas
 from flask import Blueprint, request, g
 from flask import jsonify as js, jsonify
 from api.v1.users import auth
 
 expense = Blueprint('expense', __name__)
+
 
 @expense.route('/dfs_from_statements', methods=['GET', 'POST'])
 # @auth.login_required
@@ -25,14 +27,14 @@ def loads_expenses_dfs():
     stmts = find_statement(pattern, pathdir)
     # NotImplemented for more than one statements.
     dfs = tabula.read_pdf(stmts[0],
-                        password=pass_in, silent=True,
-                        lattice=True, pages='all')
+                    password=pass_in, silent=True,
+                    lattice=True, pages='all')
     # creates summary_table from dataframe and flushes.
     # assumes summary of statement has no NaN fields.
     if not dfs or len(dfs) < 1:
         return {'message': 'statement parsing errors'}
     first_df = dfs[0]
-    first_df.replace(',','',regex=True).astype(
+    first_df.replace(',', '', regex=True).astype(
             {'PAID IN': 'float', 'PAID OUT': 'float'}).rename(
             columns={'TRANSACTION TYPE': 'transaction',
                     'PAID IN': 'paid_in',
@@ -47,7 +49,8 @@ def loads_expenses_dfs():
                 startswith('Merchant Payment') or df.loc[x, 'Details'].\
                 startswith('Pay Bill')]]
         payments.Withdrawn = payments.Withdrawn.replace(',','', regex=True)
-        datetime_df = payments.filter(items=['Completion Time']).apply(pandas.to_datetime, errors='coerce')
+        datetime_df = payments.filter(
+                items=['Completion Time']).apply(pandas.to_datetime, errors='coerce')
 
         # convert withdrawn column from str to abs integer
         payments.Withdrawn = payments.Withdrawn.astype(float)
@@ -55,8 +58,8 @@ def loads_expenses_dfs():
 
         # Drop NaN fields created by tabula-py from multiline column entries.
         # Aligns expense model to incoming dataframes
-        payments.dropna(axis=1).replace(',','',regex=True).drop(
-                columns=['Transaction\rStatus', 'Balance'], axis=1).rename(
+        payments.dropna(axis=1).drop(
+                columns=['Transaction\rStatus', 'Balance']).rename(
                 columns={'Completion Time': 'created_at', 'Details': 'description',
                 'Withdrawn': 'amount','Receipt No.': 'receipt_no'}).to_sql(
                 name='expenses', con=session.bind, if_exists='append', index=False)
