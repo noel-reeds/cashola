@@ -32,8 +32,11 @@ class User(Base, UserMixin):
         """
         Generate an authentication token.
 
-        Params:
-        :duration of token expiration.
+        Args:
+            None
+
+        Returns:
+            Auth. token.
         """
         from app import app
         auth_s = URLSafeTimedSerializer(app.config['SECRET_KEY'])
