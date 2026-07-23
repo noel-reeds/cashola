@@ -19,7 +19,7 @@ def setup() -> Flask:
     """
     app = Flask(__name__)
     swagger = Swagger(app)
-    swagger.config['title'] = 'cashola-api'
+    swagger.config['title'] = 'Skrilla API'
     app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
     app.url_map.strict_slashes = False
     app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('SQLALCHEMY_DATABASE_URI')
