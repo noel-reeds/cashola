@@ -1,8 +1,9 @@
-# But where does your cash go?  
+# What are your spending habits?    
 ## Skrilla, lets you find out!  
-  
-A simple budgeting tool to keep track users expenditure.  
-Skrilla aims to log users' expenditures from various payments platforms.  
+
+Skrilla aims to track users' spending habits to minimise impulse buying and explore users' saving opportunities.  
+
+Skilla aims to achieve this with various mobile payments platforms.  
   
 For a start, we're making it possible to trace expenditures logged on Mpesa  
 - Lipa na Mpesa options of:  
