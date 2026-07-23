@@ -8,8 +8,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: action/checkout@v2
-      - uses: action/setup-bash@v2
+      - uses: actions/checkout@v2
+      - uses: actions/setup-bash@v2
         with:
           bash-version: 5.x
       - name: run bash script
