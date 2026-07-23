@@ -5,11 +5,13 @@ on:
     - cron: '15 * * * *'
 
 jobs:
-  build:
+  run-ping-script:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-bash@v2
+      - uses: actions/checkout@v6
         with:
           bash-version: 5.x
       - name: run bash script
