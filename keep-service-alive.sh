@@ -3,5 +3,5 @@
 while true; do
   curl -s https://cashola.onrender.com/ > /dev/null
   echo "$(date  '+%Y-%m-%dT%H:%M:%S') Ping sent!"
-  sleep 600
+  sleep 900
 done
