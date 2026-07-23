@@ -13,3 +13,4 @@ jobs:
         with:
           bash-version: 5.x
       - name: run bash script
+        run: bash keep-service-alive.sh
