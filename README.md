@@ -1,4 +1,4 @@
-# Skrilla - Discover your spending habits.  
+# skrilla - discover your spending habits.  
 
 Skrilla aims to track users' spending habits to minimise impulse buying and explore users' saving opportunities.  
 
