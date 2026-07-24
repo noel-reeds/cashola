@@ -1,5 +1,6 @@
 # skrilla - discover your spending habits.  
 
+## Background  
 Skrilla aims to track users' spending habits to minimise impulse buying and explore users' saving opportunities.  
 
 Skilla aims to achieve this with various mobile payments platforms.  
