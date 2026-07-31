@@ -1,0 +1,44 @@
+body {
+  background-color: #CCE0FF;
+  min-height: 100%;
+}
+
+html {
+  display: table;
+  margin: auto;
+}
+
+h1 {
+  margin-bottom: 0;
+}
+
+header {
+  background-color:;
+  margin-top: 0;
+  /* display: flex; */
+}
+
+body {
+  display: table-cell;
+  vertical-align: middle;
+}
+
+.container,
+.skrilla_works {
+  display: flex;
+}
+
+.skrilla_at_glance p,
+.container p,
+.skrilla_works p {
+  width: 100%;
+  padding-bottom: 100%;
+  margin: 10px;
+  padding: 2px;
+  border: 1px solid;
+  border-radius: 5px;
+}
+
+.skrilla_at_glance {
+  display: flex;
+}
