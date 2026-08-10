@@ -1,7 +1,8 @@
 name: keep-service-alive
 
-on: push
-  - cron: "*/15 * * * *"
+on:
+  schedule:
+    - cron: "*/15 * * * *"
 
 jobs:
   run-ping-script:
